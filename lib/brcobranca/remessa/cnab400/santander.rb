@@ -104,7 +104,7 @@ module Brcobranca
           detalhe << documento_cedente.to_s.rjust(14, '0')                  # cpf/cnpj da empresa                   9[14]
           detalhe << codigo_transmissao                                     # Código de Transmissão                 9[20]
           detalhe << pagamento.documento_ou_numero.to_s.ljust(25, ' ')                                      # identificacao do tit. na empresa      X[25]
-          detalhe << pagamento.nosso_numero.to_s.rjust(8, '0')              # nosso numero                          9[8]
+          detalhe << nosso_numero_formatado(pagamento.nosso_numero).to_s.rjust(8, '0')              # nosso numero                          9[8]
           detalhe << pagamento.formata_data_segundo_desconto                # data limite para o segundo desconto   9[06]
           detalhe << ''.rjust(1, ' ')                                       # brancos                               X[1]
           detalhe << pagamento.codigo_multa                                 # Com multa = 4, Sem multa = 0          9[1]
@@ -224,6 +224,17 @@ module Brcobranca
           # zeros               [374]     0
           # num. sequencial     [6]
           "9#{sequencial.to_s.rjust(6, '0')}#{total_titulos}#{''.rjust(374, '0')}#{sequencial.to_s.rjust(6, "0")}"
+        end
+
+        def nosso_numero_dv(nosso_numero)
+            nosso_numero.modulo11(
+              multiplicador: (2..9).to_a,
+              mapeamento: { 10 => 0, 11 => 0 }
+            ) { |total| 11 - (total % 11) }
+        end
+
+        def nosso_numero_formatado(nosso_numero)
+          "#{nosso_numero}#{nosso_numero_dv(nosso_numero)}"
         end
       end
     end
