@@ -199,7 +199,7 @@ module Brcobranca
         end
 
         def movimento_complemento
-          return "#{conta_corrente[8]}#{digito_conta}" if conta_padrao_novo?
+          return "#{conta_corrente[-1]}#{digito_conta}" if conta_padrao_novo?
           ''.rjust(2, ' ')
         end
 
