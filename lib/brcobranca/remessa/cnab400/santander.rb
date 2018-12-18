@@ -204,7 +204,7 @@ module Brcobranca
         end
 
         def conta_padrao_novo?
-          conta_corrente.present? && conta_corrente.length > 8
+          conta_corrente.present? && conta_corrente.length >= 8
         end
 
         # Valor total de todos os títulos
