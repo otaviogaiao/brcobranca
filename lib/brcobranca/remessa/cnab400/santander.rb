@@ -174,7 +174,14 @@ module Brcobranca
           detalhe << pagamento.cep_sacado                                   # cep do pagador                        9[08]
           detalhe << pagamento.cidade_sacado.format_size(15)                # cidade do pagador                     X[15]
           detalhe << pagamento.uf_sacado                                    # uf do pagador                         X[02]
-          detalhe << pagamento.nome_avalista.format_size(30)                # Sacador/Mensagens                     X[30]
+
+          if documento_cedente.to_s.length > 11
+            #é cnpj, entao deixa nome_avalista vazio
+            detalhe << " ".format_size(30)                                    # Sacador/Mensagens                     X[30]
+          else
+            detalhe << pagamento.nome_avalista.format_size(30)                # Sacador/Mensagens                     X[30]
+          end
+          
           detalhe << ''.rjust(1, ' ')                                       # Brancos                               X[1]
           detalhe << identificador_movimento_complemento                    # Identificador do Complemento          X[1]
           detalhe << movimento_complemento                                  # Complemento                           9[2]
